@@ -177,7 +177,7 @@ Color GetColor(PieceName const &value)
         return Color::Black;
     }
 
-    return Color::White;
+    return Color::NumColors;
 }
 
 Direction LeftOf(Direction value)
