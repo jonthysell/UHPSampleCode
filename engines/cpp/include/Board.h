@@ -29,8 +29,6 @@ class Board
     bool TryGetMoveString(Move const &move, std::string &result);
     bool TryParseMove(std::string moveString, Move &result, std::string &resultString);
 
-    std::shared_ptr<Board> Clone();
-
   private:
     void GetValidMoves(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet);
     std::shared_ptr<PositionSet> GetValidPlacements();

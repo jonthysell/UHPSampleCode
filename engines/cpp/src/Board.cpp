@@ -256,16 +256,6 @@ bool Board::TryParseMove(std::string moveString, Move &result, std::string &resu
     return false;
 }
 
-std::shared_ptr<Board> Board::Clone()
-{
-    auto board = std::make_shared<Board>();
-    for (auto move : m_moveHistory)
-    {
-        board->TrustedPlay(move);
-    }
-    return board;
-}
-
 void Board::GetValidMoves(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet)
 {
     if (pieceName != PieceName::INVALID && GameInProgress(m_boardState) && m_currentColor == GetColor(pieceName) &&

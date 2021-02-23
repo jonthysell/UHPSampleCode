@@ -100,7 +100,6 @@ void Engine::NewGame(std::string args)
         {
             if (!token.empty())
             {
-
                 if (itemIndex > 2)
                 {
                     Move move;
