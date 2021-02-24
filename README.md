@@ -14,4 +14,6 @@ These sample engines are provided as starting points for would-be Hive developer
 
 ## Copyrights ##
 
+All code in this repo is free and unencumbered software released into the public domain.
+
 Hive Copyright (c) 2016 Gen42 Games. This repo is in no way associated with or endorsed by Gen42 Games.
