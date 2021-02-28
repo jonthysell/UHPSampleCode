@@ -60,11 +60,7 @@ namespace SampleEngine
 
         public override int GetHashCode()
         {
-            int value = 17;
-            value = value * 31 + Q;
-            value = value * 31 + R;
-            value = value * 31 + Stack;
-            return value;
+            return HashCode.Combine(Q, R, Stack);
         }
 
         public static bool operator ==(Position lhs, Position rhs)

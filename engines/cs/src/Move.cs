@@ -23,11 +23,7 @@ namespace SampleEngine
 
         public override int GetHashCode()
         {
-            int value = 17;
-            value = value * 31 + (int)PieceName;
-            value = value * 31 + Source.GetHashCode();
-            value = value * 31 + Destination.GetHashCode();
-            return value;
+            return HashCode.Combine(PieceName, Source, Destination);
         }
 
         public static bool operator ==(Move lhs, Move rhs)
@@ -50,7 +46,7 @@ namespace SampleEngine
 
             if (endPiece != PieceName.INVALID)
             {
-                sb.Append(" ");
+                sb.Append(' ');
                 if (beforeSeperator != '\0')
                 {
                     sb.Append($"{beforeSeperator}{endPiece}");
@@ -70,13 +66,7 @@ namespace SampleEngine
 
         public static bool TryNormalizeMoveString(string moveString, out string? result)
         {
-            bool isPass;
-            PieceName startPiece;
-            char beforeSeperator;
-            PieceName endPiece;
-            char afterSeperator;
-
-            if (TryNormalizeMoveString(moveString, out isPass, out startPiece, out beforeSeperator, out endPiece, out afterSeperator))
+            if (TryNormalizeMoveString(moveString, out bool isPass, out PieceName startPiece, out char beforeSeperator, out PieceName endPiece, out char afterSeperator))
             {
                 result = BuildMoveString(isPass, startPiece, beforeSeperator, endPiece, afterSeperator);
                 return true;

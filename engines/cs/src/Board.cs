@@ -20,10 +20,10 @@ namespace SampleEngine
 
         public bool CurrentTurnQueenInPlay => PieceInPlay(CurrentColor == Color.White ? PieceName.wQ : PieceName.bQ);
 
-        private Position[] m_piecePositions = new Position[(int)PieceName.NumPieceNames];
+        private readonly Position[] m_piecePositions = new Position[(int)PieceName.NumPieceNames];
 
-        private List<Move> m_moveHistory = new List<Move>();
-        private List<string> m_moveHistoryStr = new List<string>();
+        private readonly List<Move> m_moveHistory = new List<Move>();
+        private readonly List<string> m_moveHistoryStr = new List<string>();
 
         private MoveSet? m_cachedValidMoves = null;
         private PositionSet? m_cachedValidPlacements = null;
@@ -96,7 +96,7 @@ namespace SampleEngine
         {
             if (m_moveHistory.Count > 0)
             {
-                var lastMove = m_moveHistory[m_moveHistory.Count - 1];
+                var lastMove = m_moveHistory[^1];
 
                 if (lastMove != Move.PassMove)
                 {
@@ -153,7 +153,7 @@ namespace SampleEngine
                         switch (dir)
                         {
                             case 0: // Up
-                                endPiece = endPiece + "\\";
+                                endPiece += "\\";
                                 break;
                             case 1: // UpRight
                                 endPiece = "/" + endPiece;
@@ -165,10 +165,10 @@ namespace SampleEngine
                                 endPiece = "\\" + endPiece;
                                 break;
                             case 4: // DownLeft
-                                endPiece = endPiece + "/";
+                                endPiece += "/";
                                 break;
                             case 5: // UpLeft
-                                endPiece = endPiece + "-";
+                                endPiece += "-";
                                 break;
                         }
                         break;
@@ -509,8 +509,10 @@ namespace SampleEngine
         {
             var startingPosition = m_piecePositions[(int)pieceName];
 
-            var visitedPositions = new PositionSet();
-            visitedPositions.Add(startingPosition);
+            var visitedPositions = new PositionSet()
+            {
+                startingPosition
+            };
 
             m_piecePositions[(int)pieceName].Stack = -1;
             GetValidSlides(pieceName, moveSet, startingPosition, startingPosition, visitedPositions, 0, maxRange);
