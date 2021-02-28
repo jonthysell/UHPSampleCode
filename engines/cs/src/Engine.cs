@@ -24,48 +24,43 @@ namespace SampleEngine
 
         public void ReadLine(string line)
         {
-            var space = line.IndexOf(' ');
-            var args = space >= 0 ? line.Substring(space + 1) : "";
+            var split = (line?.Trim() ?? "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (line == Constants.CommandString_Info)
+            var command = split.Length > 0 ? split[0] : "";
+            var args = split.Length > 1 ? string.Join(" ", split, 1, split.Length - 1) : "";
+
+            switch (command)
             {
-                Info();
-            }
-            else if (line.StartsWith(Constants.CommandString_NewGame))
-            {
-                NewGame(args);
-            }
-            else if (line == Constants.CommandString_ValidMoves)
-            {
-                ValidMoves();
-            }
-            else if (line.StartsWith(Constants.CommandString_BestMove))
-            {
-                BestMove();
-            }
-            else if (line.StartsWith(Constants.CommandString_Play))
-            {
-                Play(args);
-            }
-            else if (line == Constants.CommandString_Pass)
-            {
-                Pass();
-            }
-            else if (line.StartsWith(Constants.CommandString_Undo))
-            {
-                Undo(args);
-            }
-            else if (line == Constants.CommandString_Options)
-            {
-                Options();
-            }
-            else if (line == Constants.CommandString_Exit)
-            {
-                Exit();
-            }
-            else
-            {
-                WriteError(Constants.ErrorMessage_InvalidCommand);
+                case Constants.CommandString_Info:
+                    Info();
+                    break;
+                case Constants.CommandString_NewGame:
+                    NewGame(args);
+                    break;
+                case Constants.CommandString_ValidMoves:
+                    ValidMoves();
+                    break;
+                case Constants.CommandString_BestMove:
+                    BestMove();
+                    break;
+                case Constants.CommandString_Play:
+                    Play(args);
+                    break;
+                case Constants.CommandString_Pass:
+                    Pass();
+                    break;
+                case Constants.CommandString_Undo:
+                    Undo(args);
+                    break;
+                case Constants.CommandString_Options:
+                    Options();
+                    break;
+                case Constants.CommandString_Exit:
+                    Exit();
+                    break;
+                default:
+                    WriteError(Constants.ErrorMessage_InvalidCommand);
+                    break;
             }
         }
 
