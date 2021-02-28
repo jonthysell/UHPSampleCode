@@ -95,7 +95,7 @@ bool Board::TryUndoLastMove()
 {
     if (m_moveHistory.size() > 0)
     {
-        auto lastMove = m_moveHistory.back();
+        auto const& lastMove = m_moveHistory.back();
 
         if (lastMove != PassMove)
         {
@@ -660,7 +660,7 @@ bool Board::CanMoveWithoutBreakingHive(PieceName const &pieceName)
 
 bool Board::IsOneHive()
 {
-    bool partOfHive[(int)PieceName::NumPieceNames];
+    bool partOfHive[(int)PieceName::NumPieceNames] = {};
     int piecesVisited = 0;
 
     // Find a piece on the board to start checking
