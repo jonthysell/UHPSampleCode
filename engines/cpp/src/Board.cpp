@@ -1,8 +1,6 @@
 #include <assert.h>
-#include <atomic>
 #include <queue>
 #include <sstream>
-#include <thread>
 
 #include "Board.h"
 
