@@ -6,7 +6,7 @@ See the repo [README](../../README.md) for more information.
 
 ## Requirements ##
 
-This sample requires Cmake >= 3.17 and a standard C++ build environment.
+This sample requires CMake >= 3.16 and a standard C++ build environment.
 
 ## Build ##
 
