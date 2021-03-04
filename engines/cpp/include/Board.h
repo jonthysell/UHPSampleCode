@@ -46,6 +46,11 @@ class Board
                         Position const &currentPosition, std::shared_ptr<PositionSet> visitedPositions,
                         int currentRange, int maxRange);
 
+    bool CanSlideToPositionInExactRange(PieceName const &pieceName, Position const &targetPosition, int targetRange);
+    bool CanSlideToPositionInExactRange(PieceName const &pieceName, Position const &targetPosition,
+                                        Position const &lastPosition, Position const &currentPosition, int currentRange,
+                                        int targetRange);
+
     void TrustedPlay(Move const &move);
 
     bool PlacingPieceInOrder(PieceName const &pieceName);

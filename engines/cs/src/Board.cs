@@ -312,27 +312,27 @@ namespace SampleEngine
                             });
                         }
                     }
-                    else if (CurrentTurnQueenInPlay && CanMoveWithoutBreakingHive(pieceName))
+                }
+                else if (CurrentTurnQueenInPlay && CanMoveWithoutBreakingHive(pieceName))
+                {
+                    // Piece is in play and movement is allowed
+                    switch (Enums.GetBugType(pieceName))
                     {
-                        // Piece is in play and movement is allowed
-                        switch (Enums.GetBugType(pieceName))
-                        {
-                            case BugType.QueenBee:
-                                GetValidQueenBeeMoves(pieceName, moveSet);
-                                break;
-                            case BugType.Spider:
-                                GetValidSpiderMoves(pieceName, moveSet);
-                                break;
-                            case BugType.Beetle:
-                                GetValidBeetleMoves(pieceName, moveSet);
-                                break;
-                            case BugType.Grasshopper:
-                                GetValidGrasshopperMoves(pieceName, moveSet);
-                                break;
-                            case BugType.SoldierAnt:
-                                GetValidSoldierAntMoves(pieceName, moveSet);
-                                break;
-                        }
+                        case BugType.QueenBee:
+                            GetValidQueenBeeMoves(pieceName, moveSet);
+                            break;
+                        case BugType.Spider:
+                            GetValidSpiderMoves(pieceName, moveSet);
+                            break;
+                        case BugType.Beetle:
+                            GetValidBeetleMoves(pieceName, moveSet);
+                            break;
+                        case BugType.Grasshopper:
+                            GetValidGrasshopperMoves(pieceName, moveSet);
+                            break;
+                        case BugType.SoldierAnt:
+                            GetValidSoldierAntMoves(pieceName, moveSet);
+                            break;
                     }
                 }
             }
@@ -410,14 +410,16 @@ namespace SampleEngine
 
         private void GetValidSpiderMoves(PieceName pieceName, MoveSet moveSet)
         {
-            GetValidSlides(pieceName, moveSet, 3);
+            // Get all slides up to 3 spots away
+            var upToThree = new MoveSet();
+            GetValidSlides(pieceName, upToThree, 3);
 
-            var upToTwo = new MoveSet();
-            GetValidSlides(pieceName, upToTwo, 2);
-
-            foreach (var move in upToTwo)
+            foreach (var move in upToThree)
             {
-                moveSet.Remove(move);
+                if (CanSlideToPositionInExactRange(pieceName, move.Destination, 3))
+                {
+                    moveSet.Add(move);
+                }
             }
         }
 
@@ -553,6 +555,53 @@ namespace SampleEngine
                     }
                 }
             }
+        }
+
+        private bool CanSlideToPositionInExactRange(PieceName pieceName, Position targetPosition, int targetRange)
+        {
+            Position startingPosition = m_piecePositions[(int)pieceName];
+
+            m_piecePositions[(int)pieceName].Stack = -1;
+            bool result = CanSlideToPositionInExactRange(pieceName, targetPosition, Position.NullPosition, startingPosition, 0, targetRange);
+            m_piecePositions[(int)pieceName].Stack = startingPosition.Stack;
+
+            return result;
+        }
+
+        private bool CanSlideToPositionInExactRange(PieceName pieceName, Position targetPosition, Position lastPosition, Position currentPosition, int currentRange, int targetRange)
+        {
+            bool result = false;
+            if (currentRange < targetRange)
+            {
+                for (int slideDirection = 0; slideDirection < (int)Direction.NumDirections; slideDirection++)
+                {
+                    Position slidePosition = currentPosition.GetNeighborAt((Direction)slideDirection);
+
+                    if (slidePosition != lastPosition && !HasPieceAt(slidePosition))
+                    {
+                        // Slide position is open
+
+                        var right = Enums.RightOf((Direction)slideDirection);
+                        var left = Enums.LeftOf((Direction)slideDirection);
+
+                        if (HasPieceAt(currentPosition.GetNeighborAt(right)) != HasPieceAt(currentPosition.GetNeighborAt(left)))
+                        {
+                            // Can slide into slide position
+
+                            if (targetPosition == slidePosition && currentRange + 1 == targetRange)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                result = result || CanSlideToPositionInExactRange(pieceName, targetPosition, currentPosition, slidePosition, currentRange + 1, targetRange);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         private void TrustedPlay(Move move)

@@ -15,6 +15,13 @@ namespace SampleEngine
             Stack = 0,
         };
 
+        public static Position NullPosition = new Position()
+        {
+            Q = 0,
+            R = 0,
+            Stack = -1,
+        };
+
         private static readonly int[][] NeighborDeltas = new int[][]
         {
             new int[] { 0, 1, -1 },

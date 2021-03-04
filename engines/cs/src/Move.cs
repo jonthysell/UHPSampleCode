@@ -12,8 +12,8 @@ namespace SampleEngine
         public static readonly Move PassMove = new Move
         {
             PieceName = PieceName.INVALID,
-            Source = Position.OriginPosition,
-            Destination = Position.OriginPosition,
+            Source = Position.NullPosition,
+            Destination = Position.NullPosition,
         };
 
         public override bool Equals(object? obj)
