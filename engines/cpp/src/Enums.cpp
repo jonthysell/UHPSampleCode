@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "Enums.h"
 
 namespace SampleEngine
@@ -99,49 +101,49 @@ std::string GetEnumString(PieceName const &value)
 
 PieceName GetPieceNameValue(const char *str)
 {
-    if (strcmpi(str, "wQ") == 0)
+    if (strcmp(str, "wQ") == 0)
         return PieceName::wQ;
-    else if (strcmpi(str, "wS1") == 0)
+    else if (strcmp(str, "wS1") == 0)
         return PieceName::wS1;
-    else if (strcmpi(str, "wS2") == 0)
+    else if (strcmp(str, "wS2") == 0)
         return PieceName::wS2;
-    else if (strcmpi(str, "wB1") == 0)
+    else if (strcmp(str, "wB1") == 0)
         return PieceName::wB1;
-    else if (strcmpi(str, "wB2") == 0)
+    else if (strcmp(str, "wB2") == 0)
         return PieceName::wB2;
-    else if (strcmpi(str, "wG1") == 0)
+    else if (strcmp(str, "wG1") == 0)
         return PieceName::wG1;
-    else if (strcmpi(str, "wG2") == 0)
+    else if (strcmp(str, "wG2") == 0)
         return PieceName::wG2;
-    else if (strcmpi(str, "wG3") == 0)
+    else if (strcmp(str, "wG3") == 0)
         return PieceName::wG3;
-    else if (strcmpi(str, "wA1") == 0)
+    else if (strcmp(str, "wA1") == 0)
         return PieceName::wA1;
-    else if (strcmpi(str, "wA2") == 0)
+    else if (strcmp(str, "wA2") == 0)
         return PieceName::wA2;
-    else if (strcmpi(str, "wA3") == 0)
+    else if (strcmp(str, "wA3") == 0)
         return PieceName::wA3;
-    else if (strcmpi(str, "bQ") == 0)
+    else if (strcmp(str, "bQ") == 0)
         return PieceName::bQ;
-    else if (strcmpi(str, "bS1") == 0)
+    else if (strcmp(str, "bS1") == 0)
         return PieceName::bS1;
-    else if (strcmpi(str, "bS2") == 0)
+    else if (strcmp(str, "bS2") == 0)
         return PieceName::bS2;
-    else if (strcmpi(str, "bB1") == 0)
+    else if (strcmp(str, "bB1") == 0)
         return PieceName::bB1;
-    else if (strcmpi(str, "bB2") == 0)
+    else if (strcmp(str, "bB2") == 0)
         return PieceName::bB2;
-    else if (strcmpi(str, "bG1") == 0)
+    else if (strcmp(str, "bG1") == 0)
         return PieceName::bG1;
-    else if (strcmpi(str, "bG2") == 0)
+    else if (strcmp(str, "bG2") == 0)
         return PieceName::bG2;
-    else if (strcmpi(str, "bG3") == 0)
+    else if (strcmp(str, "bG3") == 0)
         return PieceName::bG3;
-    else if (strcmpi(str, "bA1") == 0)
+    else if (strcmp(str, "bA1") == 0)
         return PieceName::bA1;
-    else if (strcmpi(str, "bA2") == 0)
+    else if (strcmp(str, "bA2") == 0)
         return PieceName::bA2;
-    else if (strcmpi(str, "bA3") == 0)
+    else if (strcmp(str, "bA3") == 0)
         return PieceName::bA3;
 
     return PieceName::INVALID;

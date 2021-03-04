@@ -1,7 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "Constants.h"
 #include "Enums.h"

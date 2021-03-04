@@ -10,7 +10,7 @@ namespace SampleEngine
 {
 struct Move
 {
-    PieceName PieceName;
+    SampleEngine::PieceName PieceName;
     Position Source;
     Position Destination;
 };
