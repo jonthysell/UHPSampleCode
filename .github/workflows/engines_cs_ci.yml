@@ -1,0 +1,47 @@
+name: UHPSampleEngine C# CI Build
+
+env:
+  Product: UHPSampleEngineCs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/engines_cs_ci.yml'
+      - 'engines/cs/**'
+      - '!engines/cs/*.md'
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  ci_build_and_test:
+    name: CI Portable Build and Test
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build Solution
+      run: dotnet build --configuration ${{ matrix.configuration }} src
+      working-directory: ./engines/cs/
+
+    - name: Test Solution
+      run: dotnet test --configuration ${{ matrix.configuration }} --no-build src
+      working-directory: ./engines/cs/
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name:  ${{ env.Product }}.Portable.${{ matrix.configuration }}
+        path: ./engines/cs/src/bin/${{ matrix.configuration }}/net5.0
