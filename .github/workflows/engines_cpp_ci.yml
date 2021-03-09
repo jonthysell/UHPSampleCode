@@ -1,7 +1,7 @@
-name: UHPSampleEngine C++ CI Build
+name: SampleEngine C++ CI
 
 env:
-  Product: UHPSampleEngineCpp
+  Product: SampleEngineCpp
 
 on:
   push:

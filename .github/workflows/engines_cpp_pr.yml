@@ -1,7 +1,7 @@
-name: UHPSampleEngine C++ PR Validation
+name: SampleEngine C++ PR
 
 env:
-  Product: UHPSampleEngineCpp
+  Product: SampleEngineCpp
 
 on:
   pull_request:

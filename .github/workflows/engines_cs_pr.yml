@@ -1,7 +1,7 @@
-name: UHPSampleEngine C# PR Validation
+name: SampleEngine C# PR
 
 env:
-  Product: UHPSampleEngineCs
+  Product: SampleEngineCs
 
 on:
   pull_request:

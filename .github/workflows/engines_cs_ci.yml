@@ -1,7 +1,7 @@
-name: UHPSampleEngine C# CI Build
+name: SampleEngine C# CI
 
 env:
-  Product: UHPSampleEngineCs
+  Product: SampleEngineCs
 
 on:
   push:
