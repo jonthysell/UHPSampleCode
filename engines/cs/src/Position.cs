@@ -24,12 +24,12 @@ namespace SampleEngine
 
         private static readonly int[][] NeighborDeltas = new int[][]
         {
-            new int[] { 0, 1, -1 },
-            new int[] { 1, 0, -1 },
-            new int[] { 1, -1, 0 },
-            new int[] { 0, -1, 1 },
-            new int[] { -1, 0, 1 },
-            new int[] { -1, 1, 0 },
+            new int[] { 0, -1 },
+            new int[] { 1, -1 },
+            new int[] { 1, 0 },
+            new int[] { 0, 1 },
+            new int[] { -1, 1 },
+            new int[] { -1, 0 },
         };
 
         public Position GetNeighborAt(Direction direction) => new Position()

@@ -22,8 +22,8 @@ static const Position OriginPosition{0, 0, 0};
 
 static const Position NullPosition{0, 0, -1};
 
-static const int NeighborDeltas[(int)Direction::NumDirections][3] = {
-    {0, 1, -1}, {1, 0, -1}, {1, -1, 0}, {0, -1, 1}, {-1, 0, 1}, {-1, 1, 0},
+static const int NeighborDeltas[(int)Direction::NumDirections][2] = {
+    {0, -1}, {1, -1}, {1, 0}, {0, 1}, {-1, 1}, {-1, 0},
 };
 
 bool operator==(Position const &lhs, Position const &rhs);

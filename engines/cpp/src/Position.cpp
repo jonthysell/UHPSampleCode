@@ -4,7 +4,7 @@ using namespace SampleEngine;
 
 Position Position::GetNeighborAt(Direction const &direction) const
 {
-    return Position{Q + NeighborDeltas[(int)direction][0], R + NeighborDeltas[(int)direction][2], Stack};
+    return Position{Q + NeighborDeltas[(int)direction][0], R + NeighborDeltas[(int)direction][1], Stack};
 }
 
 Position Position::GetAbove() const

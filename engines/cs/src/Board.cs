@@ -142,6 +142,7 @@ namespace SampleEngine
             }
             else
             {
+                m_piecePositions[(int)move.PieceName] = Position.NullPosition;
                 for (int dir = 0; dir < (int)Direction.NumDirections; dir++)
                 {
                     Position neighborPosition = move.Destination.GetNeighborAt((Direction)dir);
@@ -174,6 +175,7 @@ namespace SampleEngine
                         break;
                     }
                 }
+                m_piecePositions[(int)move.PieceName] = move.Source;
             }
 
             if (endPiece != "")

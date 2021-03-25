@@ -139,6 +139,7 @@ bool Board::TryGetMoveString(Move const &move, std::string &result)
     }
     else
     {
+        m_piecePositions[(int)move.PieceName] = NullPosition;
         for (int dir = 0; dir < (int)Direction::NumDirections; dir++)
         {
             Position neighborPosition = move.Destination.GetNeighborAt((Direction)dir);
@@ -171,6 +172,7 @@ bool Board::TryGetMoveString(Move const &move, std::string &result)
                 break;
             }
         }
+        m_piecePositions[(int)move.PieceName] = move.Source;
     }
 
     if (!endPiece.empty())
