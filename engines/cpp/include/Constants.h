@@ -30,7 +30,7 @@ constexpr const char *ErrorMessage_Unknown = "An unknown error has occured";
 constexpr const char *InvalidMoveString = "invalidmove";
 constexpr const char *InvalidMoveMessage_Generic = "Unable to play that move at this time.";
 
-constexpr const char *PassMoveString = "PASS";
+constexpr const char *PassMoveString = "pass";
 } // namespace SampleEngine
 
 #endif

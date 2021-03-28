@@ -29,6 +29,6 @@ namespace SampleEngine
         public const string InvalidMoveString = "invalidmove";
         public const string InvalidMoveMessage_Generic = "Unable to play that move at this time.";
 
-        public const string PassMoveString = "PASS";
+        public const string PassMoveString = "pass";
     }
 }
