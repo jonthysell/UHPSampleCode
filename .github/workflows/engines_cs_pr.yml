@@ -14,7 +14,7 @@ on:
 
 jobs:
   pr_build_and_test:
-    name: PR Portable Build and Test
+    name: PR Unpacked Build and Test
     runs-on: windows-latest
     strategy:
       matrix:
@@ -39,5 +39,5 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name:  ${{ env.Product }}.Portable.${{ matrix.configuration }}
-        path: ./engines/cs/src/bin/${{ matrix.configuration }}/net5.0
+        name:  ${{ env.Product }}.Unpacked.${{ matrix.configuration }}
+        path: ./engines/cs/src/bin/${{ matrix.configuration }}/net6.0
