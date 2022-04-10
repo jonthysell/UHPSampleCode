@@ -6,7 +6,7 @@ See the repo [README](../../README.md) for more information.
 
 ## Requirements ##
 
-This sample requires a .NET 5 build environment.
+This sample requires a .NET 6 build environment.
 
 ## Build ##
 
