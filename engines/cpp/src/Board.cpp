@@ -499,7 +499,8 @@ void Board::GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> 
                            Position const &startingPosition, Position const &currentPosition,
                            std::shared_ptr<PositionSet> visitedPositions, int currentRange, int maxRange)
 {
-    if (maxRange < 0 || currentRange < maxRange)
+    auto unlimitedRange = maxRange < 0;
+    if (unlimitedRange || currentRange < maxRange)
     {
         for (int slideDirection = 0; slideDirection < (int)Direction::NumDirections; slideDirection++)
         {
@@ -517,10 +518,20 @@ void Board::GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> 
                     // Can slide into slide position
                     auto move = Move{pieceName, startingPosition, slidePosition};
 
+                    if (unlimitedRange)
+                    {
+                        visitedPositions->insert(slidePosition);
+                    }
+
+                    auto moveAdded = false;
                     if (moveSet->find(move) == moveSet->end())
                     {
                         moveSet->insert(move);
-                        visitedPositions->insert(slidePosition);
+                        moveAdded = true;
+                    }
+
+                    if (moveAdded || (!moveAdded && !unlimitedRange))
+                    {
                         GetValidSlides(pieceName, moveSet, startingPosition, slidePosition, visitedPositions,
                                        currentRange + 1, maxRange);
                     }

@@ -525,7 +525,8 @@ namespace SampleEngine
 
         private void GetValidSlides(PieceName pieceName, MoveSet moveSet, Position startingPosition, Position currentPosition, PositionSet visitedPositions, int currentRange, int maxRange)
         {
-            if (maxRange < 0 || currentRange < maxRange)
+            bool unlimitedRange = maxRange < 0;
+            if (unlimitedRange || currentRange < maxRange)
             {
                 for (int slideDirection = 0; slideDirection < (int)Direction.NumDirections; slideDirection++)
                 {
@@ -548,9 +549,14 @@ namespace SampleEngine
                                 Destination = slidePosition
                             };
 
-                            if (moveSet.Add(move))
+                            if (unlimitedRange)
                             {
                                 visitedPositions.Add(slidePosition);
+                            }
+
+                            bool moveAdded = moveSet.Add(move);
+                            if (moveAdded || (!moveAdded && !unlimitedRange))
+                            {
                                 GetValidSlides(pieceName, moveSet, startingPosition, slidePosition, visitedPositions, currentRange + 1, maxRange);
                             }
                         }
