@@ -412,17 +412,7 @@ namespace SampleEngine
 
         private void GetValidSpiderMoves(PieceName pieceName, MoveSet moveSet)
         {
-            // Get all slides up to 3 spots away
-            var upToThree = new MoveSet();
-            GetValidSlides(pieceName, upToThree, 3);
-
-            foreach (var move in upToThree)
-            {
-                if (CanSlideToPositionInExactRange(pieceName, move.Destination, 3))
-                {
-                    moveSet.Add(move);
-                }
-            }
+            GetValidSlides(pieceName, moveSet, 3);
         }
 
         private void GetValidBeetleMoves(PieceName pieceName, MoveSet moveSet)
@@ -506,110 +496,83 @@ namespace SampleEngine
 
         private void GetValidSoldierAntMoves(PieceName pieceName, MoveSet moveSet)
         {
-            GetValidSlides(pieceName, moveSet, -1);
+            GetValidSlides(pieceName, moveSet);
         }
 
-        private void GetValidSlides(PieceName pieceName, MoveSet moveSet, int maxRange)
+        private void GetValidSlides(PieceName pieceName, MoveSet moveSet, int fixedRange = 0)
         {
             var startingPosition = m_piecePositions[(int)pieceName];
-
-            var visitedPositions = new PositionSet()
-            {
-                startingPosition
-            };
-
             m_piecePositions[(int)pieceName].Stack = -1;
-            GetValidSlides(pieceName, moveSet, startingPosition, startingPosition, visitedPositions, 0, maxRange);
+
+            if (fixedRange > 0)
+            {
+                GetValidSlides(pieceName, moveSet, startingPosition, startingPosition, startingPosition, fixedRange);
+            }
+            else
+            {
+                GetValidSlides(pieceName, moveSet, startingPosition, startingPosition, startingPosition);
+            }
+
             m_piecePositions[(int)pieceName].Stack = startingPosition.Stack;
         }
 
-        private void GetValidSlides(PieceName pieceName, MoveSet moveSet, Position startingPosition, Position currentPosition, PositionSet visitedPositions, int currentRange, int maxRange)
+        private void GetValidSlides(PieceName pieceName, MoveSet moveSet, Position startingPosition, Position lastPosition, Position currentPosition)
         {
-            bool unlimitedRange = maxRange < 0;
-            if (unlimitedRange || currentRange < maxRange)
+            for (int slideDirection = 0; slideDirection < (int)Direction.NumDirections; slideDirection++)
+            {
+                var slidePosition = currentPosition.GetNeighborAt((Direction)slideDirection);
+
+                if (slidePosition != lastPosition && slidePosition != startingPosition && !HasPieceAt(slidePosition))
+                {
+                    // Slide position is open
+                    if (HasPieceAt(currentPosition.GetNeighborAt(Enums.RightOf((Direction)slideDirection))) != HasPieceAt(currentPosition.GetNeighborAt(Enums.LeftOf((Direction)slideDirection))))
+                    {
+                        // Can slide into slide position
+                        var move = new Move()
+                        {
+                            PieceName = pieceName,
+                            Source = startingPosition,
+                            Destination = slidePosition
+                        };
+
+                        if (moveSet.Add(move))
+                        {
+                            GetValidSlides(pieceName, moveSet, startingPosition, currentPosition, slidePosition);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GetValidSlides(PieceName pieceName, MoveSet moveSet, Position startingPosition, Position lastPosition, Position currentPosition, int remainingSlides)
+        {
+            if (remainingSlides == 0)
+            {
+                var move = new Move()
+                {
+                    PieceName = pieceName,
+                    Source = startingPosition,
+                    Destination = currentPosition
+                };
+
+                moveSet.Add(move);
+            }
+            else
             {
                 for (int slideDirection = 0; slideDirection < (int)Direction.NumDirections; slideDirection++)
                 {
                     var slidePosition = currentPosition.GetNeighborAt((Direction)slideDirection);
-
-                    if (!visitedPositions.Contains(slidePosition) && !HasPieceAt(slidePosition))
+                    if (slidePosition != lastPosition && slidePosition != startingPosition && !HasPieceAt(slidePosition))
                     {
                         // Slide position is open
-
-                        var left = Enums.LeftOf((Direction)slideDirection);
-                        var right = Enums.RightOf((Direction)slideDirection);
-
-                        if (HasPieceAt(currentPosition.GetNeighborAt(right)) != HasPieceAt(currentPosition.GetNeighborAt(left)))
+                        if (HasPieceAt(currentPosition.GetNeighborAt(Enums.RightOf((Direction)slideDirection))) != HasPieceAt(currentPosition.GetNeighborAt(Enums.LeftOf((Direction)slideDirection))))
                         {
                             // Can slide into slide position
-                            var move = new Move()
-                            {
-                                PieceName = pieceName,
-                                Source = startingPosition,
-                                Destination = slidePosition
-                            };
-
-                            if (unlimitedRange)
-                            {
-                                visitedPositions.Add(slidePosition);
-                            }
-
-                            bool moveAdded = moveSet.Add(move);
-                            if (moveAdded || (!moveAdded && !unlimitedRange))
-                            {
-                                GetValidSlides(pieceName, moveSet, startingPosition, slidePosition, visitedPositions, currentRange + 1, maxRange);
-                            }
+                            GetValidSlides(pieceName, moveSet, startingPosition, currentPosition, slidePosition, remainingSlides - 1);
                         }
                     }
                 }
             }
-        }
-
-        private bool CanSlideToPositionInExactRange(PieceName pieceName, Position targetPosition, int targetRange)
-        {
-            Position startingPosition = m_piecePositions[(int)pieceName];
-
-            m_piecePositions[(int)pieceName].Stack = -1;
-            bool result = CanSlideToPositionInExactRange(pieceName, targetPosition, Position.NullPosition, startingPosition, 0, targetRange);
-            m_piecePositions[(int)pieceName].Stack = startingPosition.Stack;
-
-            return result;
-        }
-
-        private bool CanSlideToPositionInExactRange(PieceName pieceName, Position targetPosition, Position lastPosition, Position currentPosition, int currentRange, int targetRange)
-        {
-            bool result = false;
-            if (currentRange < targetRange)
-            {
-                for (int slideDirection = 0; slideDirection < (int)Direction.NumDirections; slideDirection++)
-                {
-                    Position slidePosition = currentPosition.GetNeighborAt((Direction)slideDirection);
-
-                    if (slidePosition != lastPosition && !HasPieceAt(slidePosition))
-                    {
-                        // Slide position is open
-
-                        var right = Enums.RightOf((Direction)slideDirection);
-                        var left = Enums.LeftOf((Direction)slideDirection);
-
-                        if (HasPieceAt(currentPosition.GetNeighborAt(right)) != HasPieceAt(currentPosition.GetNeighborAt(left)))
-                        {
-                            // Can slide into slide position
-
-                            if (targetPosition == slidePosition && currentRange + 1 == targetRange)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                result = result || CanSlideToPositionInExactRange(pieceName, targetPosition, currentPosition, slidePosition, currentRange + 1, targetRange);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
 
         private void TrustedPlay(Move move)

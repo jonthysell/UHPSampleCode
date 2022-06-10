@@ -41,15 +41,11 @@ class Board
     void GetValidGrasshopperMoves(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet);
     void GetValidSoldierAntMoves(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet);
 
-    void GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet, int maxRange);
+    void GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet, int fixedRange);
     void GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet, Position const &startingPosition,
-                        Position const &currentPosition, std::shared_ptr<PositionSet> visitedPositions,
-                        int currentRange, int maxRange);
-
-    bool CanSlideToPositionInExactRange(PieceName const &pieceName, Position const &targetPosition, int targetRange);
-    bool CanSlideToPositionInExactRange(PieceName const &pieceName, Position const &targetPosition,
-                                        Position const &lastPosition, Position const &currentPosition, int currentRange,
-                                        int targetRange);
+                        Position const &lastPosition, Position const &currentPosition);
+    void GetValidSlides(PieceName const &pieceName, std::shared_ptr<MoveSet> moveSet, Position const &startingPosition,
+                        Position const &lastPosition, Position const &currentPosition, int remainingSlides);
 
     void TrustedPlay(Move const &move);
 
